@@ -1,14 +1,29 @@
+import React, { useEffect,useState } from 'react'
 import ReactDOM from 'react-dom'
-import React from 'react'
-import Counter from './Counter'
+import CurrencyRow from './CurrencyRow'
 
-console.log("hello react");
+const BASE_URL = "https://api.exchangeratesapi.io/latest";
 
 function App(){
+
+	const [currencyOptions, setCurrencyOptions] = useState([])
+	console.log(currencyOptions, " ??")
+
+	useEffect(() => {
+		fetch(BASE_URL)
+			.then(res => res.json())
+			.then(data => {
+				console.log(data, " ∆∆∆")
+				setCurrencyOptions([data.base, ...Object.keys(data.rates)])
+			})
+	},[])
+
 	return(
 		<>
-			<h1>I am react</h1>
-			<Counter />			
+			<h1>Convert</h1>
+			<CurrencyRow currencyOptions={currencyOptions}/>
+			<p className="equals">=</p>
+			<CurrencyRow currencyOptions={currencyOptions}/>
 		</>
 	)
 }
